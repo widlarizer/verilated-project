@@ -2,6 +2,6 @@
 .stamp.verilate
 .zig-cache
 obj_dir
-build.zig
-.justfile
 waveform.vcd
+.cache
+compile_commands.json

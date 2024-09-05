@@ -1,6 +1,6 @@
 // code originally from itsembedded.com and modified by thuvasooriya
-#include "obj_dir/Valu.h"
-#include "obj_dir/Valu___024unit.h"
+#include "Valu.h"
+#include "Valu___024unit.h"
 #include <cstdlib>
 #include <iostream>
 #include <stdlib.h>
