@@ -1,4 +1,65 @@
+// mem left
+// mem right
+// enum column = left or right
+// row = 0
+// if char == whitespace:
+//   if column == left:
+//     cur_mem = right
+//   if column == right:
+//     cur_mem = left
+//     row++
+// num -> cur_mem[row] = cur_mem[row] * 10 + (char - '0')
+// find smallest in left
+// null it
+// find smallest in right
+// null it
+// take the abs difference
+// add it to total distance
+// write out total distance
+// done
+
+use std::mem::clocked_memory;
+
+enum Column {
+    Left,
+    Right,
+}
+struct State {
+    column : Column,
+    row : uint<10>,
+}
+
+// TODO dry?
+fn is_num(c: int<8>) -> bool {
+    (c >= 48) && (c <= 57)
+}
+
 #[no_mangle]
-entity top(#[no_mangle] clk: clock, #[no_mangle] in: int<8>, #[no_mangle] done: bool) -> int<8> {
+entity top(#[no_mangle] clk: clock, #[no_mangle] rst: bool, #[no_mangle] in: int<8>, #[no_mangle] done: bool) -> int<8> {
+    let no_write: (bool, uint<10>, uint<32>) = (false, 0, 0);
+
+    reg(clk) state reset(rst: State$(column: Column::Left, row: 0)) = match state.column {
+        Column::Left => match in {
+            32 => State$(column: Column::Right, row: state.row), // space
+            _ => State$(column: Column::Left, row: state.row),
+        },
+        Column::Right => match in {
+            10 => State$(column: Column::Left, row: trunc(state.row + 1)), // newline
+            32 => State$(column: Column::Right, row: state.row), // space
+            _ => State$(column: Column::Right, row: state.row),
+        },
+    };
+
+    reg(clk) (left_w_port, right_w_port, acc) : ((bool, uint<10>, uint<32>), (bool, uint<10>, uint<32>), uint<32>) reset(rst: (no_write, no_write, 0)) = if (is_num(in)) {
+        (no_write, no_write, trunc(trunc::<_, uint<32>>(acc * 10u32) + zext::<_, 32>(int_to_uint(in - 48))))
+    } else {
+        match state.column {
+            Column::Left => ((true, state.row, acc), no_write, 0u32),
+            Column::Right => (no_write, (true, state.row, acc), 0u32),
+        }
+    };
+    let left_mem: Memory<uint<32>, 1024> = inst clocked_memory(clk, [left_w_port]);
+    let right_mem: Memory<uint<32>, 1024> = inst clocked_memory(clk, [right_w_port]);
+
     0
 }
