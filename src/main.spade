@@ -1,0 +1,4 @@
+#[no_mangle]
+entity top(#[no_mangle] clk: clock, #[no_mangle] in: int<8>, #[no_mangle] done: bool) -> int<8> {
+    0
+}

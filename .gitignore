@@ -5,3 +5,5 @@ obj_dir
 waveform.vcd
 .cache
 compile_commands.json
+*.sv
+*.v

@@ -9,6 +9,7 @@ pkgs.mkShell {
     zig
     zls
     spade
+    swim
     surfer
   ];
   shellHook = ''

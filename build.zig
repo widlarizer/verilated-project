@@ -14,10 +14,20 @@ pub fn build(b: *std.Build) !void {
         "-std=c++14",
         "-Wall",
         "--trace",
+        "-Wno-DECLFILENAME",
+        "-Wno-EOFNEWLINE",
+        "-Wno-UNUSEDSIGNAL",
+        "--top",
+        module_name,
         "-cc",
         b.fmt("{s}.sv", .{module_name}),
     });
     verilate_step.dependOn(&verilate_cmd.step);
+
+    const spade_step = b.step("spade", "run spade to generate verilog design");
+    const spade_cmd = b.addSystemCommand(&[_][]const u8{ "spade", "-o", module_name ++ ".sv", "src/main.spade" });
+    spade_step.dependOn(&spade_cmd.step);
+    verilate_step.dependOn(spade_step);
 
     // Add a command to touch .stamp.verilate
     const touch_stamp = b.addSystemCommand(&[_][]const u8{
