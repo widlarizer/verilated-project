@@ -23,7 +23,7 @@ mainly derived from the 4 tutorials provided by the itsembedded.com with quality
 note that your top level module name should be the name of the sv or v file you are creating (convention an ease).
 your testbench file will be modulename_tb.cpp and it is assumed you have verilator, gtkwave and make and clangd in path.
 
-1. go to makefile and assign the `MODULE` value
+1. go to makefile and assign the `MODULE` Vtope
 2. that's it, write and change your code in the module and tb files and run `make waves`, if there is an error try to fix it and `make clean && make waves`
 3. commands are available for each step separately too `make build`, `make sim`, `make lint`
 
@@ -33,7 +33,7 @@ your testbench file will be modulename_tb.cpp and it is assumed you have verilat
 
 ## todo
 
-- [ ] figure out a way to skip manually including `Valu.h` and type files
+- [ ] figure out a way to skip manually including `Vtop.h` and type files
 - [ ] experiment with zig build system instead of make files
 - [ ] move from make to just as the command runner
 - [ ] vscode editor config branch - low priority

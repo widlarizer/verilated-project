@@ -4,7 +4,7 @@ MODULE=alu
 
 sim: waveform.vcd
 verilate: .stamp.verilate
-build: obj_dir/Valu
+build: obj_dir/Vtop
 
 waves: waveform.vcd
 	@echo

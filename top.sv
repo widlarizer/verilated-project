@@ -5,7 +5,7 @@ typedef enum logic [1:0] {
   nop = 2'h0
 } operation_t  /*verilator public*/;
 
-module alu #(
+module top #(
     parameter WIDTH = 6
 ) (
     input clk,
